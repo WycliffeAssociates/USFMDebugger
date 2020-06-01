@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\work\USFMToolsSharp\USFMToolsSharp\USFMToolsSharp.csproj" />
+    <PackageReference Include="USFMToolsSharp" Version="1.4.0" />
   </ItemGroup>
 
 </Project>
