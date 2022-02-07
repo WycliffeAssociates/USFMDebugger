@@ -21,7 +21,7 @@ namespace USFMToolsSharpDebugger
 
         private void txtInput_TextChanged(object sender, EventArgs e)
         {
-            USFMParser parser = new USFMParser();
+            USFMParser parser = new USFMParser(ignoreUnknownMarkers:true);
             var output = parser.ParseFromString(txtInput.Text);
             trOutput.Nodes.Clear();
             foreach(var marker in output.Contents)
@@ -44,21 +44,23 @@ namespace USFMToolsSharpDebugger
 
         private string CreateDetail(Marker marker)
         {
-            switch (marker)
+            return marker switch
             {
-                case TextBlock textBlock:
-                    return $"Text: {textBlock.Text}";
-                case FMarker fMarker:
-                    return $"Caller: {fMarker.FootNoteCaller}";
-                case VMarker vMarker:
-                    return $"Verse Number: {vMarker.VerseNumber}";
-            }
-            return "";
+                TextBlock textBlock => $"Text: {textBlock.Text}",
+                FMarker fMarker => $"Caller: {fMarker.FootNoteCaller}",
+                VMarker vMarker => $"Verse Number: {vMarker.VerseNumber}",
+                CMarker cMarker => $"Chapter Number: {cMarker.Number}",
+                QMarker qMarker => $"Poetry Level: {qMarker.Depth}\n Isblock: {qMarker.IsPoetryBlock}",
+                SMarker sMarker => $"Section level: {sMarker.Weight}",
+                _ => "",
+            };
         }
 
         private void trOutput_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            lblDetails.Text = CreateDetail((Marker)e.Node.Tag);
+            var marker = (Marker)e.Node.Tag;
+            lblDetails.Text = CreateDetail(marker);
+            txtInput.Select(marker.Position, marker.Identifier.Length);
         }
     }
 }

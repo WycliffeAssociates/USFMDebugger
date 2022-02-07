@@ -45,6 +45,7 @@
             // txtInput
             // 
             this.txtInput.Location = new System.Drawing.Point(12, 56);
+            this.txtInput.MaxLength = 3276700;
             this.txtInput.Multiline = true;
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(399, 426);
